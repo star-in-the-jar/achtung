@@ -18,6 +18,7 @@ const { activeTabUrl } = toRefs(useActiveTabUrlStore());
 useMutationObserver(
   $tabHandler,
   () => {
+    if (!$tabHandler.value) return;
     activeTabUrl.value = ($tabHandler.value.dataset?.url as string) || "";
   },
   {
