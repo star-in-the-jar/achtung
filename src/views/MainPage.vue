@@ -1,19 +1,19 @@
 <template>
   <div class="main-page">
     <div class="content">
-      <h1
-        class="text-5xl"
-        style="color: black; margin-bottom: 50px"
-        v-if="!focusSessionStarted"
-      >
+      <h1 class="text-5xl" style="color: black; margin-bottom: 50px" v-if="!focusSessionStarted">
         START FOCUS SESSION
       </h1>
       <Timer />
+<<<<<<< HEAD
       <div
         class="icon-container"
         @click="startFocusSession"
         v-if="!focusSessionStarted"
       >
+=======
+      <div class="icon-container" @click="startFocusSession" v-if="!focusSessionStarted">
+>>>>>>> d506bc5 (Create store & detect distracted from input files.)
         <CirclePlay color="black" size="64" class="stroke-1" />
       </div>
       <div class="text-container" v-if="focusSessionStarted">
@@ -21,10 +21,7 @@
           FOCUS ON
         </h1>
         <div class="timer">
-          <h1
-            class="focus-on text-5xl"
-            style="color: black; margin-bottom: 50px"
-          >
+          <h1 class="focus-on text-5xl" style="color: black; margin-bottom: 50px">
             {{ timer }}
           </h1>
           <button @click="startTimer">
@@ -181,11 +178,8 @@ setInterval(() => {
   from {
     transform: translateX(-100%);
   }
-  <<<<<<<
-    HEAD
-    =======>>>>>>>aaabf82
-    (Timer and menu in main page added (not completed))
-    to {
+
+  to {
     transform: translateX(0);
   }
 }

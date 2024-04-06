@@ -23,7 +23,7 @@ export const DATA_FILE_NAMES = [
   DataFileName.WINDOWS,
 ];
 
-export type Milliseconds = number;
+type Milliseconds = number;
 
 export interface Event {
   timestamp: Milliseconds;
@@ -67,7 +67,7 @@ export interface GlobalStore {
     | SessionState.BREAK;
 }
 
-export const detectedInstance: Detected = {
+const detectedInstance: Detected = {
   isTired: false,
   isDistracted: false,
   isAsleep: false,
