@@ -1,0 +1,7 @@
+export enum PopupAction {
+  TAKE_A_BREAK = "TAKE_A_BREAK",
+  START_BREAK = "START_BREAK",
+  START_SESSION = "START_SESSION",
+  CLOSE = "CLOSE",
+  SKIP = "SKIP",
+}
