@@ -1,5 +1,6 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup lang="ts">
+import HelloWorld from "./components/HelloWorld.vue";
+import Button from "./components/ui/button/Button.vue";
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import HelloWorld from './components/HelloWorld.vue'
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      <Button>Start Session</Button>
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
