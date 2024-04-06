@@ -41,7 +41,6 @@ useEventListener(window, "message", (event) => {
 
 <template>
   <router-view></router-view>
-  <CurrentTabHandler />
 </template>
 
 <style scoped>
