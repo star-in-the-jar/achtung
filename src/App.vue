@@ -3,7 +3,6 @@ import CurrentTabHandler from "./components/CurrentTabHandler.vue";
 import { useEventListener } from "@vueuse/core";
 import { PopupAction } from "@/enums/popup-state.enum";
 
-console.log(window.opener);
 let openedWindow: Window | null = null;
 
 const handleOpen = () => {
