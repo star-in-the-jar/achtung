@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
 import Button from "./components/ui/button/Button.vue";
+import CurrentTabHandler from "./components/CurrentTabHandler.vue";
 </script>
 
 <template>
   <router-view></router-view>
   <Button></Button>
+
+  <CurrentTabHandler />
 </template>
 
 <style scoped>
