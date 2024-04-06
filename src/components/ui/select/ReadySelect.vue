@@ -28,10 +28,7 @@ import {
   SelectGroup,
   SelectItem,
 } from ".";
-type Option = {
-  value: string;
-  label: string;
-};
+import { type Option } from "@/types";
 
 const props = defineProps<{
   options: Option[];

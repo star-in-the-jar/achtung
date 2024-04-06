@@ -62,9 +62,8 @@
           </button>
         </div>
       </Transition>
-
       <div
-        class="grid max-w-[800px] grid-cols-4 items-center gap-x-[2.1875rem] transition-opacity"
+        class="grid max-w-[800px] grid-cols-4 items-center gap-x-[2.1875rem] transition-opacity mb-[3.625rem]"
         :class="
           sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
         "
@@ -93,7 +92,25 @@
           v-model="timerOptions.focusGoal"
         />
       </div>
+      <ReadyTagsInput
+        v-model="bannedPages"
+        placeholder="Pages to ban"
+        class="max-w-[800px] w-full mb-10"
+        :class="
+          sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
+        "
+      />
+      <AutoComplete
+        :options="currentApps"
+        v-model="bannedApps"
+        class="max-w-[800px] w-full"
+        placeholder="Apps to ban"
+        :class="
+          sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
+        "
+      />
     </div>
+
     <div
       class="fixed inline-flex flex-col right-[1.5625rem] top-[1.5625rem] gap-y-[0.8125rem]"
     >
@@ -108,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import CircleFastForward from "@/components/icons/CircleFastForward.vue";
 import {
   CirclePlay,
@@ -118,7 +135,9 @@ import {
   BarChart3,
 } from "lucide-vue-next";
 import { ReadySelect } from "@/components/ui/select";
-import { SessionState } from "@/types";
+import { ReadyTagsInput } from "@/components/ui/tags-input";
+import { AutoComplete } from "@/components/ui/auto-complete";
+import { Option, SessionState } from "@/types";
 
 const workOptions = [
   { label: "25 minutes work", value: "25m" },
@@ -164,6 +183,27 @@ const timerOptions = reactive({
   breakTime: "",
   cycles: "",
   focusGoal: "",
+});
+
+const currentApps = [
+  { label: "Google Chrome", value: "google-chrome" },
+  { label: "Visual Studio Code", value: "visual-studio-code" },
+  { label: "Slack", value: "slack" },
+  { label: "Discord", value: "discord" },
+  { label: "Spotify", value: "spotify" },
+  { label: "Notion", value: "notion" },
+  { label: "Microsoft Teams", value: "microsoft-teams" },
+  { label: "Zoom", value: "zoom" },
+  { label: "Microsoft Edge", value: "microsoft-edge" },
+  { label: "Firefox", value: "firefox" },
+];
+
+const bannedPages = ref<string[]>([]);
+const bannedApps = ref<string[]>([]);
+
+// AKTUALNIE ZBANOWANE APLIKACJE
+const detailedBannedAps = computed(() => {
+  return currentApps.filter((app) => bannedApps.value.includes(app.label));
 });
 
 const sessionState = ref<SessionState>(SessionState.STOPPED);
