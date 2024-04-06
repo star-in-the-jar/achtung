@@ -30,10 +30,16 @@ enum SessionState {
   STOPPED = "STOPPED",
 }
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 export {
   type Milliseconds,
   type Event,
   type Session,
   type SessionConfig,
+  type Option,
   SessionState,
 };
