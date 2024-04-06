@@ -1,10 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainPage from "../views/MainPage.vue";
+import PopupView from "@/components/views/PopupView.vue";
+
 const routes = [
   {
-    path: "/mainpage",
+    path: "/",
     name: "MainPage",
     component: MainPage,
+  },
+  {
+    path: "/popup",
+    name: "Popup",
+    component: PopupView,
   },
 ];
 
