@@ -96,7 +96,11 @@ const handleItemDelete = (desiredItemToDelete: Option) => {
     >
       <ComboboxAnchor as-child>
         <ComboboxInput :placeholder="placeholder" as-child>
-          <TagsInputInput class="w-full" @keydown.enter.prevent />
+          <TagsInputInput
+            class="w-full"
+            @keydown.enter.prevent
+            @click="open = true"
+          />
         </ComboboxInput>
       </ComboboxAnchor>
 
