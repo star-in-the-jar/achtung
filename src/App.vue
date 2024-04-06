@@ -5,7 +5,6 @@ import Button from "./components/ui/button/Button.vue";
 
 <template>
   <router-view></router-view>
-  <Button></Button>
 </template>
 
 <style scoped>
