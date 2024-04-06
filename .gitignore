@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Inne rzeczy magiczki
+/Driver-State-Detection
+/data
+/venv
