@@ -79,7 +79,7 @@
   }
 }
 
-.main-page {
+.page-wrapper {
   background: linear-gradient(to bottom right, #4e54c8, #8f94fb);
   min-height: 100vh;
   display: flex;

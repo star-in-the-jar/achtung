@@ -1,5 +1,5 @@
 <template>
-  <div class="main-page">
+  <div class="page-wrapper">
     <div class="content">
       <h2
         :class="[
@@ -114,12 +114,12 @@
     <div
       class="fixed inline-flex flex-col right-[1.5625rem] top-[1.5625rem] gap-y-[0.8125rem]"
     >
-      <button>
+      <RouterLink to="/settings">
         <Settings :size="36" class="stroke-slate-900" />
-      </button>
-      <button>
+      </RouterLink>
+      <RouterLink to="/statistics/relative-spent-time" @click="">
         <BarChart3 :size="36" class="stroke-slate-900" />
-      </button>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -137,7 +137,7 @@ import {
 import { ReadySelect } from "@/components/ui/select";
 import { ReadyTagsInput } from "@/components/ui/tags-input";
 import { AutoComplete } from "@/components/ui/auto-complete";
-import { Option, SessionState } from "@/types";
+import { SessionState } from "@/types";
 
 const workOptions = [
   { label: "25 minutes work", value: "25m" },
