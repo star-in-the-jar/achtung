@@ -83,23 +83,26 @@ export const useGlobalStore = defineStore("global-store", () => {
 
     let isDistractedBrowser = false;
     if (rawSelectedTabUrl) {
-      const parsedSelectedTabUrl = JSON.parse(rawSelectedTabUrl)?.url;
-      if (parsedSelectedTabUrl) {
-        const url = new URL(parsedSelectedTabUrl);
-        console.log(url.hostname);
-        if (
-          global.value.state.config?.unwantedWebsites.includes(url.hostname)
-        ) {
-          isDistractedBrowser = true;
+      try {
+        const parsedSelectedTabUrl = JSON.parse(rawSelectedTabUrl)?.url;
+        if (parsedSelectedTabUrl) {
+          const url = new URL(parsedSelectedTabUrl);
+          if (
+            global.value.state.config?.unwantedWebsites.includes(url.hostname)
+          ) {
+            isDistractedBrowser = true;
+          }
         }
-      }
+      } catch (e) { }
     }
 
+    console.log(global.value.lastDetected)
     const isDistracted =
       global.value.lastDetected.isDistracted ||
       global.value.lastDetected.isTired ||
       global.value.lastDetected.isAsleep ||
       global.value.lastDetected.isLookingAway ||
+      !global.value.lastDetected.hasHead ||
       isDistractedBrowser ||
       isDistractedApp;
 
