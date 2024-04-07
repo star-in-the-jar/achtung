@@ -45,7 +45,7 @@ export interface Session {
 export interface SessionConfig {
   workDuration: Milliseconds;
   breakDuration: Milliseconds;
-  cycleNumber: number;
+  cycleCount: number;
   focusGoal: number;
   unwantedApps: string[];
   unwantedWebsites: string[];
@@ -59,15 +59,13 @@ export interface Detected {
   isPresent: boolean;
 }
 export interface GlobalStore {
-  sessions: Session[];
-  lastDetected: Detected;
-  stateBeforePause:
-    | SessionState.STOPPED
-    | SessionState.WORK
-    | SessionState.BREAK;
+  lastDetected: FetchDataReturnType;
+  state: NewSessionState | null;
+  windowReference: any | null;
+  lastDistractedTimeStamp: number;
 }
 
-export const detectedInstance: Detected = {
+const detectedInstance: Detected = {
   isTired: false,
   isDistracted: false,
   isAsleep: false,
@@ -75,9 +73,32 @@ export const detectedInstance: Detected = {
   isPresent: true,
 };
 
+export interface NewSessionState {
+  config: SessionConfig | null;
+  cycleNumber: number;
+  timeLeft: number;
+  state: SessionState;
+  wasWorking: boolean;
+}
+
 export interface Option {
   value: string;
   label: string;
+}
+
+export type IsSomethingResponse = boolean;
+export type WindowsResponse = {
+  focusedWindow: string | null;
+  windows: string[];
+};
+
+export interface FetchDataReturnType {
+  isAsleep: IsSomethingResponse;
+  isDistracted: IsSomethingResponse;
+  hasHead: IsSomethingResponse;
+  isLookingAway: IsSomethingResponse;
+  isTired: IsSomethingResponse;
+  windows: WindowsResponse;
 }
 
 export const detectedKeys = Object.keys(detectedInstance) as (keyof Detected)[];
