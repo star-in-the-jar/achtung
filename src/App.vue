@@ -7,8 +7,11 @@ let openedWindow: Window | null = null;
 
 const handleOpen = () => {
   if (!window.opener) {
-    const leftOffset = window.screen.width - 400;
-    const topOffset = window.screen.height - 400;
+    const blockWidth = 600;
+    const blockHeight = 300;
+
+    const leftOffset = window.screen.width / 2 - blockWidth / 2;
+    const topOffset = window.screen.height / 2 - blockHeight / 2;
 
     if (openedWindow) {
       openedWindow.close();
@@ -18,7 +21,7 @@ const handleOpen = () => {
     openedWindow = window.open(
       "/popup?state=lost-focus",
       "_blank",
-      `width=400,height=300,popup=true,left=${leftOffset},top=${topOffset}`
+      `width=${blockWidth},height=${blockHeight},popup=true,left=${leftOffset},top=${topOffset}`
     );
   }
 };
