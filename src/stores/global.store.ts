@@ -34,6 +34,11 @@ const fetchData = async (): Promise<FetchDataReturnType> => {
 
 const getTime = () => new Date().getTime();
 
+const audio = document.createElement("audio")
+audio.src = "http://localhost:3000/sound.mp3";
+audio.loop = true
+audio.load()
+
 export const useGlobalStore = defineStore("global-store", () => {
   const global = ref<GlobalStore>({
     state: null,
@@ -122,6 +127,7 @@ export const useGlobalStore = defineStore("global-store", () => {
         const leftOffset = window.screen.width / 2 - blockWidth / 2;
         const topOffset = window.screen.height / 2 - blockHeight / 2;
 
+        audio.play()
         global.value.windowReference = window.open(
           "/popup?state=lost-focus",
           "_blank",
@@ -134,6 +140,7 @@ export const useGlobalStore = defineStore("global-store", () => {
       (!isDistracted || global.value.state.state !== SessionState.WORK) &&
       global.value.windowReference
     ) {
+      audio.pause()
       global.value.windowReference.close();
       global.value.windowReference = null;
     }
