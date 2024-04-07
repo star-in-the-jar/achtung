@@ -1,14 +1,7 @@
 <template>
   <div class="page-wrapper">
     <div class="content">
-      <h2
-        :class="[
-          sessionState === SessionState.WORK ? 'opacity-100' : 'opacity-0',
-        ]"
-        class="text-9xl mb-[1.875rem] transition-opacity"
-      >
-        22:14
-      </h2>
+      <Timer />
       <h1 class="text-5xl mb-[1.875rem] font-extrabold uppercase">
         {{ sessionHeadings[sessionState] }}
       </h1>
@@ -65,7 +58,7 @@
       <div
         class="grid max-w-[800px] grid-cols-4 items-center gap-x-[2.1875rem] transition-opacity mb-[3.625rem]"
         :class="
-          sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
+          sessionState === SessionState.STOPPED ? 'opacity-100' : 'opacity-0'
         "
       >
         <ReadySelect
@@ -97,7 +90,7 @@
         placeholder="Pages to ban"
         class="max-w-[800px] w-full mb-10"
         :class="
-          sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
+          sessionState === SessionState.STOPPED ? 'opacity-100' : 'opacity-0'
         "
       />
       <AutoComplete
@@ -106,7 +99,7 @@
         class="max-w-[800px] w-full"
         placeholder="Apps to ban"
         :class="
-          sessionState !== SessionState.WORK ? 'opacity-100' : 'opacity-0'
+          sessionState === SessionState.STOPPED ? 'opacity-100' : 'opacity-0'
         "
       />
     </div>
@@ -125,8 +118,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, toRefs, watch } from "vue";
+import { useGlobalStore } from "@/stores/global.store";
 import CircleFastForward from "@/components/icons/CircleFastForward.vue";
+import Timer from "@/components/Timer.vue";
 import {
   CirclePlay,
   CircleStop,
@@ -139,24 +134,29 @@ import { ReadyTagsInput } from "@/components/ui/tags-input";
 import { AutoComplete } from "@/components/ui/auto-complete";
 import { SessionState } from "@/types";
 
+const { global } = toRefs(useGlobalStore());
+
+// IN MINUTES
+
 const workOptions = [
-  { label: "25 minutes work", value: "25m" },
-  { label: "30 minutes work", value: "30m" },
-  { label: "35 minutes work", value: "35m" },
-  { label: "40 minutes work", value: "40m" },
-  { label: "45 minutes work", value: "45m" },
-  { label: "50 minutes work", value: "50m" },
-  { label: "55 minutes work", value: "55m" },
-  { label: "60 minutes work", value: "60m" },
+  { label: "25 minutes work", value: "25" },
+  { label: "30 minutes work", value: "30" },
+  { label: "35 minutes work", value: "35" },
+  { label: "40 minutes work", value: "40" },
+  { label: "45 minutes work", value: "45" },
+  { label: "50 minutes work", value: "50" },
+  { label: "55 minutes work", value: "55" },
+  { label: "60 minutes work", value: "60" },
 ];
 
+// IN MINUTES
 const breakOptions = [
-  { label: "5 minutes break", value: "5m" },
-  { label: "10 minutes break", value: "10m" },
-  { label: "15 minutes break", value: "15m" },
-  { label: "20 minutes break", value: "20m" },
-  { label: "25 minutes break", value: "25m" },
-  { label: "30 minutes break", value: "30m" },
+  { label: "5 minutes break", value: "5" },
+  { label: "10 minutes break", value: "10" },
+  { label: "15 minutes break", value: "15" },
+  { label: "20 minutes break", value: "20" },
+  { label: "25 minutes break", value: "25" },
+  { label: "30 minutes break", value: "30" },
 ];
 
 const cycleOptions = [
@@ -179,23 +179,15 @@ const focusGoal = [
 ];
 
 const timerOptions = reactive({
-  workTime: "",
-  breakTime: "",
-  cycles: "",
-  focusGoal: "",
+  workTime: "30",
+  breakTime: "5",
+  cycles: "1",
+  focusGoal: "0.8",
 });
 
 const currentApps = [
-  { label: "Google Chrome", value: "google-chrome" },
-  { label: "Visual Studio Code", value: "visual-studio-code" },
-  { label: "Slack", value: "slack" },
-  { label: "Discord", value: "discord" },
-  { label: "Spotify", value: "spotify" },
-  { label: "Notion", value: "notion" },
-  { label: "Microsoft Teams", value: "microsoft-teams" },
-  { label: "Zoom", value: "zoom" },
-  { label: "Microsoft Edge", value: "microsoft-edge" },
-  { label: "Firefox", value: "firefox" },
+  { label: "Terminator", value: "terminator" },
+  { label: "firefox", value: "firefox" },
 ];
 
 const bannedPages = ref<string[]>([]);
@@ -206,18 +198,44 @@ const detailedBannedAps = computed(() => {
   return currentApps.filter((app) => bannedApps.value.includes(app.label));
 });
 
-const sessionState = ref<SessionState>(SessionState.STOPPED);
+const sessionState = computed({
+  get: () => global.value.state?.state || SessionState.STOPPED,
+  set: (value) => {
+    if (!global.value.state) return;
+    global.value.state = {
+      ...global.value.state,
+      state: value,
+    };
+  },
+});
 
 const handleStartTimerClick = () => {
-  // dostajesz taki przykładowy timerOptions
-  //  {
-  //     "workTime": "30m",
-  //     "breakTime": "10m",
-  //     "cycles": "3",
-  //     "focusGoal": "0.95"
-  // }
+  if (!global.value.state) {
+    global.value.state = {
+      config: {
+        breakDuration: parseInt(timerOptions.breakTime) * 60 * 1000,
+        workDuration: parseFloat(timerOptions.workTime) * 60 * 1000,
+        cycleCount: parseInt(timerOptions.cycles),
+        focusGoal: parseFloat(timerOptions.focusGoal),
+        unwantedApps: detailedBannedAps.value.map((app) => app.value),
+        unwantedWebsites: bannedPages.value,
+      },
+      state: SessionState.WORK,
+      wasWorking: true,
+      timeLeft: parseFloat(timerOptions.workTime) * 60 * 1000,
+      cycleNumber: 0,
+    };
+    return;
+  }
 
-  sessionState.value = SessionState.WORK;
+  if (global.value.state.state === SessionState.PAUSED) {
+    if (global.value.state.wasWorking) {
+      global.value.state.state = SessionState.WORK;
+    } else {
+      global.value.state.state = SessionState.BREAK;
+    }
+    return;
+  }
 };
 
 const handlePauseTimerClick = () => {
@@ -225,10 +243,19 @@ const handlePauseTimerClick = () => {
 };
 
 const handleStopTimerClick = () => {
-  sessionState.value = SessionState.STOPPED;
+  global.value.state = null;
 };
 
 const handleFastForwardTimerClick = () => {
+  if (!global.value.state || !global.value.state.config?.breakDuration) return;
+
+  if (global.value.state.state === SessionState.WORK) {
+    global.value.state.state = SessionState.BREAK;
+    global.value.state.timeLeft = global.value.state.config?.breakDuration;
+  } else if (global.value.state.state === SessionState.BREAK) {
+    global.value.state.state = SessionState.WORK;
+    global.value.state.timeLeft = global.value.state.config?.workDuration;
+  }
   // STACHU DODAJ TU KOD NA FAST FORWARD
 };
 
@@ -238,4 +265,9 @@ const sessionHeadings = {
   [SessionState.BREAK]: "Break time",
   [SessionState.STOPPED]: "Start session",
 };
+
+watch(sessionState, (newValue) => {
+  if (!global.value.state) return;
+  global.value.state.state = newValue;
+});
 </script>
