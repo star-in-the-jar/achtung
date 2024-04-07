@@ -14,14 +14,14 @@
     />
     <path
       d="M34.1667 39.1666L44.6667 31L34.1667 22.8333V39.1666Z"
-      stroke-width="2"
+      stroke-width="2.5"
       stroke-linecap="round"
       stroke-linejoin="round"
       class="stroke-inherit"
     />
     <path
       d="M21.3333 39.1666L31.8333 31L21.3333 22.8333V39.1666Z"
-      stroke-width="2"
+      stroke-width="2.5"
       stroke-linecap="round"
       stroke-linejoin="round"
       class="stroke-inherit"

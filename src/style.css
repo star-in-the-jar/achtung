@@ -75,7 +75,7 @@
   body {
     @apply bg-background text-foreground;
 
-    font-family: "Inter", "Times New Roman", Times, serif;
+    font-family: "Inter", "Roboto", Times, sans-serif;
   }
 }
 

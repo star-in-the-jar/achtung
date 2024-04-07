@@ -23,7 +23,7 @@ export const DATA_FILE_NAMES = [
   DataFileName.WINDOWS,
 ];
 
-type Milliseconds = number;
+export type Milliseconds = number;
 
 export interface Event {
   timestamp: Milliseconds;

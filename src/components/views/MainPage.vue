@@ -238,4 +238,8 @@ const sessionHeadings = {
   [SessionState.BREAK]: "Break time",
   [SessionState.STOPPED]: "Start session",
 };
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 2861cdd (Merge landing changes.)
